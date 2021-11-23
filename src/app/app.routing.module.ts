@@ -8,11 +8,11 @@ const routes: Routes = [
     loadChildren: () => import('./schedule/schedule.module').then(m => m.ScheduleModule),
   },
   { path: '', component: ScheduleComponent },
-  { path: '', pathMatch: 'full', redirectTo: 'all' }
+  { path: '', pathMatch: 'full', redirectTo: '' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: false })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

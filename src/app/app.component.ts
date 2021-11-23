@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 
-export class SmsScheduler {
+export default class SmsScheduler {
   title = 'sms-scheduler';
 }

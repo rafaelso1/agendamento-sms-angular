@@ -5,14 +5,14 @@ import { AppRoutingModule } from '../app.routing.module';
 import { ScheduleRouting } from './schedule.routing';
 import { ScheduleComponent } from './schedule.component';
 
+
 @NgModule({
   declarations: [
-    ScheduleComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    ScheduleRouting
+    AppRoutingModule
+    
   ],
   providers: [],
   bootstrap: [ScheduleModule]
