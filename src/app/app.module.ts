@@ -20,7 +20,8 @@ import { ScheduleComponent } from './schedule/schedule.component';
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
