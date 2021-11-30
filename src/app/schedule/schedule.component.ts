@@ -5,7 +5,7 @@ import { scheduleService } from './schedule.service';
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.css']
+styleUrls: ['./schedule.component.css', './bootstrap.min.css']
 })
 
 export class ScheduleComponent implements OnInit{
@@ -20,6 +20,10 @@ export class ScheduleComponent implements OnInit{
   openSchedule:boolean = false;
   allSchedule:any = [];
   firstSchedule:any = null;
+  activateList:any = [
+    {id: 0, text: "NÃO"},
+    {id: 1, text: "SIM"},
+  ];
 
   newSchedule(){
     this.getFormSchedule();
@@ -36,6 +40,31 @@ export class ScheduleComponent implements OnInit{
     this.listSchedule = (this.listSchedule == true) ? false : true;
     this.openSchedule = (this.openSchedule == true) ? false : true;
   }
+
+  fileIncluded(e: any) {
+    
+    let file = e.target.files[0]; 
+    
+    this.scheduleService.read(file)
+      .then(result => this.firstSchedule.pessoas = result);
+  }
+
+  deleteBind(a: any,p: any){
+    this.scheduleService.delete({ id_agendamento : a, telefone : p })
+      .subscribe(res => {
+
+        let array: any[] = [];
+
+        this.firstSchedule.pessoas.forEach((i: { telefone: any; }) => {
+          if(i.telefone != p){
+            array.push(i);
+          }
+        });
+        
+        this.firstSchedule.pessoas = array;
+
+      });
+  }
   
   confirm(){
     this.scheduleService.update(this.firstSchedule)
@@ -49,8 +78,7 @@ export class ScheduleComponent implements OnInit{
     if (
         (this.firstSchedule.hour_min == null || this.firstSchedule.hour_min == "") ||
         (this.firstSchedule.message == null || this.firstSchedule.message == "") ||
-        (this.firstSchedule.activate == null || this.firstSchedule.activate == "") ||
-        (this.firstSchedule.users.length == 0)
+        (this.firstSchedule.activate == null || this.firstSchedule.activate == "")
       ) {
       return true;
     }
@@ -63,7 +91,7 @@ export class ScheduleComponent implements OnInit{
     this.scheduleService.post(obj)
       .subscribe(res => {
         this.firstSchedule = res.data;
-        this.getFormSchedule
+        this.getFormSchedule();
       })
   }
 
