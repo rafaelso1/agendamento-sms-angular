@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import { scheduleService } from './schedule.service';
-import * as mockXhrBackend from '../mock-xhr-backend';
 
 @Component({
   selector: 'app-schedule',
@@ -12,7 +11,6 @@ styleUrls: ['./schedule.component.css', './bootstrap.min.css']
 export class ScheduleComponent{
   constructor(
       private scheduleService : scheduleService,
-      private MockXHRBackend : mockXhrBackend.MockXHRBackend
     ) { }
 
   listSchedule:boolean = true;
@@ -31,16 +29,7 @@ export class ScheduleComponent{
       hour_min: null,
       message: "",
       activate: null,
-      users: [ {
-        id: 1,
-        name: "Junior da Silva Almeia",
-        tel: "11999999999"
-    },
-    {
-        id: 2,
-        name: "Rafael Soares da Silva",
-        tel: "11988888888"
-    } ],
+      users: [ ],
     }
   }
 
@@ -54,7 +43,7 @@ export class ScheduleComponent{
     let file = e.target.files[0]; 
     
     this.scheduleService.read(file)
-      .then(result => this.firstSchedule.pessoas = result);
+      .then(result => this.firstSchedule.users = result);
   }
 
   deleteBind(a: any,p: any){
@@ -63,53 +52,61 @@ export class ScheduleComponent{
 
         let array: any[] = [];
 
-        this.firstSchedule.pessoas.forEach((i: { telefone: any; }) => {
+        this.firstSchedule.users.forEach((i: { telefone: any; }) => {
           if(i.telefone != p){
             array.push(i);
           }
         });
         
-        this.firstSchedule.pessoas = array;
+        this.firstSchedule.users = array;
 
       });
   }
   
-  confirm(){
-    this.scheduleService.update(this.firstSchedule)
-      .subscribe(res =>{
-        this.getFormSchedule();
-        this.getAll();
-      })
-  }
-
+  
   disabledBtn(){
     if (
-        (this.firstSchedule.hour_min == null || this.firstSchedule.hour_min == "") ||
+      (this.firstSchedule.hour_min == null || this.firstSchedule.hour_min == "") ||
         (this.firstSchedule.message == null || this.firstSchedule.message == "") ||
-        (this.firstSchedule.activate == null || this.firstSchedule.activate == "") ||
-        (this.firstSchedule.name == null || this.firstSchedule.name == "")
+        (this.firstSchedule.activate == null || this.firstSchedule.activate == "")
       ) {
-      return true;
-    }
+        return true;
+      }
     else {
       return false;
     }
   }
-
+  
   editOne(obj: any){
     this.scheduleService.post(obj)
       .subscribe(res => {
         this.firstSchedule = res.data;
         this.getFormSchedule();
       })
+    }
+
+  getOne(obj:any){
+    this.scheduleService.post(obj)
+      .subscribe(res => {
+        this.firstSchedule = res.data;
+        this.getFormSchedule();
+      });
   }
 
   getAll(){
     this.scheduleService.get()
-      .subscribe((res) => this.scheduleService = res.data);
-  }
+      .subscribe((res) => this.allSchedule = res.data);
+    }
+    
+    confirm(){
+      this.scheduleService.update(this.firstSchedule)
+        .subscribe(res =>{
+          this.getFormSchedule();
+          this.getAll();
+        });
+    }
 
-  cancel(){
+    cancel(){
     this.getAll();
     this.getFormSchedule();
   }

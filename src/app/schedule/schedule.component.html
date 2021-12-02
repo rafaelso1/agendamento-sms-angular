@@ -1,86 +1,79 @@
-<header>
+<header class="text-center mb-5">
     <h1>Agendamento de SMS</h1>
 </header>
 
-<div class="float-left">
-    <button class="btn btn-success btn-xs" (click)="newSchedule()">
-      Novo Agendamento
-    </button>
-</div>
-<br>
+<div class = "container rounded border border-primary p-4 bg-light">
+    <div class="float-left">
+        <button class="btn btn-success btn-xs" (click)="newSchedule()">
+        Novo Agendamento
+        </button>
+    </div>
+    <br>
 
-<div *ngIf="listSchedule">
-    
-    <div class="row" *ngIf="allSchedule.length > 0">
-        <div class="col-xs-2 col-md-2" *ngFor="let i of allSchedule">
-            <div class="block" [ngStyle]="{ 'background-color': i % 0 ? '#E6EFE6' : '#FFFFFF'}">
-                <span><b>Hrs:</b> {{ i.hour_min }}</span><br>
-                <span>{{ i.users.length }} Usuários</span><br>
-                <button class="btn btn-primary btn-xs" (click)="editOne(i)">Editar</button>
+    <div *ngIf="listSchedule">
+        
+        <div class="row" *ngIf="allSchedule.length > 0">
+            <div class="col-xs-2 col-md-2" *ngFor="let i of allSchedule">
+                <div class="block" [ngStyle]="{ 'background-color': i % 0 ? '#E6EFE6' : '#FFFFFF'}">
+                    <span><b>Hrs:</b> {{ i.hour_min }}</span><br>
+                    <span>{{ i.users.length }} Usuários</span><br>
+                    <button class="btn btn-primary btn-xs" (click)="editOne(i)">Editar</button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!openSchedule && firstSchedule != null">
+            <div class="form-group col-sm-12 d-flex">
+                <div class="form-group col-sm-2">
+                    <label for="hora-minuto" class="hour_min">Hora do Agendamento.</label>
+                    <input type="time" name="hora-minuto" id="hora-minuto" min="00:00" max="23:59" [(ngModel)]="firstSchedule.hour_min" class="rounded">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label for="activate">Ativo:</label>
+                    <select name="activate" id="activate" class="form-control" [(ngModel)]="firstSchedule.activate">
+                        <option *ngFor="let i of activateList" [value]="i.id">{{ i.text }}</option>
+                    </select>
+                </div>
+                <div class="form-group col-sm-8">
+                    <label for="file">Arquivo: <span class="notify">Favor, enviar arquivos do tipo CSV com DDD+Número;Nome e Sobrenome: </span></label>
+                    <input id="file" type="file" class="form-control" (change)="fileIncluded($event)"/>
+                </div>
+            </div>
+            <div class="form-group col-sm-12">
+                <label for="mensagem">Mensangem: {{ firstSchedule.message.length }} /144</label>
+                <textarea class="form-control rounded" name="mensagem" id="mensagem" cols="30" rows="5" maxlength="144" [(ngModel)]="firstSchedule.message"></textarea>
+            </div>
+            <div class="col-sm-12">
+                <legend class="legend">
+                    Usuários
+                    <div class="float-right" *ngIf="firstSchedule.users.length > 0">
+                        {{firstSchedule.users.length}}
+                    </div>
+                </legend>
+            </div>
+            <div class="table-responsive col-md-12 scroll">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                        <th class="col-sm-4 center">TELEFONE</th>
+                        <th class="col-sm-8 center">NOME</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="firstSchedule.users.length > 0">
+                        <tr *ngFor="let p of firstSchedule.users">
+                        <td class="center">{{ p.tel }}</td>
+                        <td>{{ p.name }}</td>
+                        <td class="center"><span class="glyphicon glyphicon-remove" aria-hidden="true" (click)="deleteBind(firstSchedule.id,p.telefone)"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="form-group col-sm-12">
+                <br><br>
+                <button class="btn btn-lg btn-primary" (click)="confirm()" [disabled]="disabledBtn()">Confirmar</button>
+                <button class="btn btn-lg btn-danger spacing-left ml-1" (click)="cancel()">Cancelar</button>
             </div>
         </div>
     </div>
-
-    <div *ngIf="allSchedule.length == 0">
-        Não há agendamento cadastrado.
-    </div>
-    
-    <div *ngIf="!openSchedule && firstSchedule != null">
-        <div class="form-group col-sm-12">
-            <label for="mensagem">Mensangem: {{ firstSchedule.message.length }} /144</label>
-            <textarea class="form-control" name="mensagem" id="mensagem" cols="30" rows="5" maxlength="144" [(ngModel)]="firstSchedule.message"></textarea>
-        </div>
-        <div class="form-group col-sm-2">
-            <label for="hora-minuto" class="hour_min"></label>
-            <input type="time" name="hora-minuto" id="hora-minuto" min="00:00" max="23:59" [(ngModel)]="firstSchedule.hour_min">
-        </div>
-        <div class="form-group col-sm-2">
-            <label for="activate">Ativo:</label>
-            <select name="activate" id="activate" class="form-control" [(ngModel)]="firstSchedule.activate">
-                <option *ngFor="let i of activateList" [value]="i.id">{{ i.text }}</option>
-            </select>
-        </div>
-        <div class="form-group col-sm-8">
-            <label for="file">Arquivo: <span class="notify">Favor, enviar arquivos do tipo CSV com DDD+Número;João Santos de Telefone: </span></label>
-            <input id="file" type="file" class="form-control" (change)="fileIncluded($event)"/>
-        </div>
-        <div class="col-sm-12">
-            <legend class="legend">
-                Usuários
-                <div class="float-right" *ngIf="firstSchedule.users.length > 0">
-                    {{firstSchedule.users.length}}
-                </div>
-            </legend>
-        </div>
-        <div class="table-responsive col-md-12 scroll">
-            <table class="table table-condensed table-hover">
-                <thead>
-                    <tr>
-                      <th class="col-sm-4 center">TELEFONE</th>
-                      <th class="col-sm-8 center">NOME</th>
-                      <th class="col-sm-8 center">EXCLUIR</th>
-                    </tr>
-                  </thead>
-                  <tbody *ngIf="firstSchedule.users.length > 0">
-                    <tr *ngFor="let p of firstSchedule.users">
-                      <td class="center">{{ p.tel }}</td>
-                      <td>{{ p.name }}</td>
-                      <td class="center"><span class="glyphicon glyphicon-remove" aria-hidden="true" (click)="deleteBind(firstSchedule.id,p.telefone)"></span></td>
-                    </tr>
-                  </tbody>
-                  <tbody *ngIf="firstSchedule.users.length == 0">
-                    <tr>
-                      <td colspan="3">...</td>
-                    </tr>
-                  </tbody>
-            </table>
-        </div>
-        
-        <div class="form-group col-sm-12">
-            <br><br>
-            <button class="btn btn-lg btn-primary" (click)="confirm()" [disabled]="disabledBtn()">Confirmar</button>
-            <button class="btn btn-lg btn-danger spacing-left" (click)="cancel()">Cancelar</button>
-        </div>
-    </div>
-</div>
-    
+</div>     

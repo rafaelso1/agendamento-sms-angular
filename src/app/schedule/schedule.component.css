@@ -1,0 +1,7 @@
+*{
+    font-family: Courier, "Lucida Console", monospace;
+}
+
+div.container{
+    display: grid;
+}
