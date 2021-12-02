@@ -32,5 +32,6 @@
   "enableIvy": false,
   "scripts": {
     "postinstall": "ngcc"
- }
+ },
+ "no-switch-case-fall-through": true
 }

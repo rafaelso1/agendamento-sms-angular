@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { scheduleService } from './schedule.service';
+import * as mockXhrBackend from '../mock-xhr-backend';
 
 @Component({
   selector: 'app-schedule',
@@ -8,12 +9,10 @@ import { scheduleService } from './schedule.service';
 styleUrls: ['./schedule.component.css', './bootstrap.min.css']
 })
 
-export class ScheduleComponent implements OnInit{
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+export class ScheduleComponent{
   constructor(
-      private scheduleService : scheduleService
+      private scheduleService : scheduleService,
+      private MockXHRBackend : mockXhrBackend.MockXHRBackend
     ) { }
 
   listSchedule:boolean = true;
@@ -32,7 +31,16 @@ export class ScheduleComponent implements OnInit{
       hour_min: null,
       message: "",
       activate: null,
-      users: []
+      users: [ {
+        id: 1,
+        name: "Junior da Silva Almeia",
+        tel: "11999999999"
+    },
+    {
+        id: 2,
+        name: "Rafael Soares da Silva",
+        tel: "11988888888"
+    } ],
     }
   }
 
@@ -78,7 +86,8 @@ export class ScheduleComponent implements OnInit{
     if (
         (this.firstSchedule.hour_min == null || this.firstSchedule.hour_min == "") ||
         (this.firstSchedule.message == null || this.firstSchedule.message == "") ||
-        (this.firstSchedule.activate == null || this.firstSchedule.activate == "")
+        (this.firstSchedule.activate == null || this.firstSchedule.activate == "") ||
+        (this.firstSchedule.name == null || this.firstSchedule.name == "")
       ) {
       return true;
     }

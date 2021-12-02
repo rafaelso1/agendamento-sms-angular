@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import SmsScheduler from './app.component';
 import { HttpClientModule, HttpXhrBackend } from '@angular/common/http';
 import { ScheduleComponent } from './schedule/schedule.component';
+import { MockXHRBackend } from './mock-xhr-backend';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,9 @@ import { ScheduleComponent } from './schedule/schedule.component';
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
-    { provide: LOCALE_ID, useValue: 'pt-BR' }
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    { provide: HttpXhrBackend, useClass: MockXHRBackend },
+    MockXHRBackend,
   ],
   bootstrap: [SmsScheduler]
 })
