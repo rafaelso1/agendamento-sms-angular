@@ -5,7 +5,7 @@ import { scheduleService } from './schedule.service';
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
-styleUrls: ['./schedule.component.css', './bootstrap.min.css']
+styleUrls: ['./schedule.component.css']
 })
 
 export class ScheduleComponent{
