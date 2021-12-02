@@ -4,10 +4,11 @@
 
 div.container{
     display: grid;
+    background-image: '../background-sms.jpg';
 }
 
 button:disabled {
     background-color: #333 !important;
     color: #666;
     cursor: default;
-  }
+}

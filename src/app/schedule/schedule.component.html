@@ -4,7 +4,7 @@
 
 <div class = "container rounded border border-primary p-4 bg-light">
     <div class="float-left">
-        <button class="btn btn-success btn-xs" (click)="newSchedule()">
+        <button class="btn btn-primary btn-xs" (click)="newSchedule()">
         Novo Agendamento
         </button>
     </div>
@@ -70,7 +70,7 @@
             
             <div class="form-group col-sm-12">
                 <br><br>
-                <button class="btn btn-lg btn-primary" (click)="confirm()" [disabled]="disabledBtn()">Confirmar</button>
+                <button class="btn btn-lg btn-success" (click)="confirm()" [disabled]="disabledBtn()">Confirmar</button>
                 <button class="btn btn-lg btn-danger spacing-left ml-1" (click)="cancel()">Cancelar</button>
             </div>
         </div>
