@@ -5,3 +5,9 @@
 div.container{
     display: grid;
 }
+
+button:disabled {
+    background-color: #333 !important;
+    color: #666;
+    cursor: default;
+  }
